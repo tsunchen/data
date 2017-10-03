@@ -1,0 +1,13 @@
+vim /etc/shadwosocks.json
+
+{
+  "server": "0.0.0.0",
+  "port_password": {
+    "8768": "f36hh0eee0abad_ts"
+  },
+  "local_port":1080,
+  "timeout":300,
+  "method":"rc4-md5",
+  "fast_open": false,
+  "workers": 4
+}

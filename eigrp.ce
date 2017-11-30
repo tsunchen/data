@@ -1,0 +1,81 @@
+CE#show run
+Building configuration...
+
+Current configuration : 696 bytes
+!
+version 12.4
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname CE
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 10.0.0.2 255.0.0.0
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ ip address 11.0.0.1 255.0.0.0
+ duplex auto
+ speed auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router eigrp 1
+ network 10.0.0.0
+ network 11.0.0.0
+ auto-summary
+!
+ip classless
+ip default-network 11.0.0.0
+ip route 0.0.0.0 0.0.0.0 FastEthernet0/1 
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end

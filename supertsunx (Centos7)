@@ -1,0 +1,55 @@
+[root@tsunz conf]# cat /usr/sbin/supertsunx
+#!/bin/bash
+
+echo -e ""
+echo -e "    \e[31m WELCOME to USE TSunx Server    "
+echo -e "\e[32m"
+echo -e "#### Please choose following menu to active ####
+    #    q:  Exit                          #
+    #    1 : netstat
+    #    3 : disable ping
+    #    4 : enable  ping
+    #    10: jmpto  192.168.1.1            #
+    #    11: start nginx                   #
+    #    12: stop  nginx                   #
+    #    13: start redis                   #
+    #    14: stop  redis                   #
+    #    15: start ssserver                #
+    #    16: stop  ssserver                #
+    #    21: start zookeeper               #
+    #    22: stop  zookeeper               #
+    #    23: start kafka                   #
+    #    24: stop  kafka                   #
+    #    31: start hadoop (alone mode)     #
+    #    32: stop  hadoop (alone mode)     #
+################################################
+"'\033[37m\033[0m'
+
+while [ True ];
+  do
+    echo ""
+    echo ">>>";
+    read -p "" nu
+    case "$nu" in
+        1)  netstat -nultp;;
+        3)  echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_all && echo "please choose menu to active";;
+        4)  echo 0 > /proc/sys/net/ipv4/icmp_echo_ignore_all && echo "please choose menu to active";;
+        10) ssh 192.168.1.1 && echo "please choose menu to active";;
+        11) /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf && echo "please choose menu to active";;
+        12) /usr/local/nginx/sbin/nginx -v && echo "please choose menu to active";;
+        13) /usr/local/redis/bin/redis-server /usr/local/redis/etc/redis.conf && echo "please choose menu to active";;
+        14) pkill redis-server && echo "please choose menu to active";;
+        15) ssserver -c /etc/shadowsocks.json -d start && echo "please choose menu to active";;
+        16) ssserver -c /etc/shadowsocks.json -d stop  && echo "please choose menu to active";;
+        21) cd /3rd/zookeeper-3.4.10/bin && ./zkServer.sh start;;
+        22) cd /3rd/zookeeper-3.4.10/bin && ./zkServer.sh stop;;
+        #22) cd /3rd/kafka_2.10-0.10.2.1 && bin/kafka-server-start.sh  config/server.properties && echo "kafka-s started";;
+        #22) cd /3rd/kafka_2.10-0.10.2.1 && bin/kafka-server-start.sh  config/server.properties 1>/dev/null 2>&1 &;;
+        23) cd /3rd/kafka_2.10-0.10.2.1 && bin/kafka-server-start.sh -daemon config/server.properties && echo "kafka-s started";;
+        24) cd /3rd/kafka_2.10-0.10.2.1 && bin/kafka-server-stop.sh && echo "kafka-s stopped";;
+        31) cd /3rd/hadoop-2.7.5 && sbin/start-all.sh --config /3rd/hadoop-2.7.5/etc/hadoop_local;;
+        32) cd /3rd/hadoop-2.7.5 && sbin/stop-all.sh --config /3rd/hadoop-2.7.5/etc/hadoop_local;;
+        q) exit;;
+        *) echo "error inputed";;
+    esac
+  done
